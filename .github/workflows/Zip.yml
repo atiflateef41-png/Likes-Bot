@@ -1,0 +1,28 @@
+name: Extract ZIP File
+
+on:
+  workflow_dispatch:
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Unzip LIKE-API-SRC.zip
+        run: |
+          unzip LIKE-API-SRC.zip -d LIKE-API-SRC/
+          rm LIKE-API-SRC.zip
+
+      - name: Commit and Push Extracted Files
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@://github.com"
+          git add .
+          git commit -m "Extracted LIKE-API-SRC.zip content" || echo "No changes to commit"
+          git push
+          
